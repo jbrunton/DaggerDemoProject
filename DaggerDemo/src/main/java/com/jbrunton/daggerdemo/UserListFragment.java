@@ -7,7 +7,10 @@ import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import com.jbrunton.daggerdemo.dummy.DummyContent;
+import com.jbrunton.daggerdemo.events.UsersAvailableEvent;
+import com.jbrunton.daggerdemo.models.User;
+import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 
 /**
  * A list fragment representing a list of Users. This fragment
@@ -49,6 +52,9 @@ public class UserListFragment extends ListFragment {
         public void onItemSelected(String id);
     }
 
+    private ArrayAdapter<User> adapter;
+    private Bus bus;
+
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
      * nothing. Used only when this fragment is not attached to an activity.
@@ -66,16 +72,34 @@ public class UserListFragment extends ListFragment {
     public UserListFragment() {
     }
 
+    @Subscribe public void usersAvailable(UsersAvailableEvent event) {
+        if (event.getUsers() != null) {
+            this.adapter.addAll(event.getUsers());
+        }
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         // TODO: replace with a real list adapter.
-        setListAdapter(new ArrayAdapter<DummyContent.DummyItem>(
+        this.adapter = new ArrayAdapter<User>(
                 getActivity(),
                 android.R.layout.simple_list_item_activated_1,
-                android.R.id.text1,
-                DummyContent.ITEMS));
+                android.R.id.text1);
+        setListAdapter(this.adapter);
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BusProvider.get().unregister(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BusProvider.get().register(this);
     }
 
     @Override
@@ -115,7 +139,7 @@ public class UserListFragment extends ListFragment {
 
         // Notify the active callbacks interface (the activity, if the
         // fragment is attached to one) that an item has been selected.
-        mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
+        // mCallbacks.onItemSelected(DummyContent.ITEMS.get(position).id);
     }
 
     @Override

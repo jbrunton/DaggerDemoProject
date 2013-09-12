@@ -29,6 +29,11 @@ public class User {
         return String.format("%1s %2s", firstName, lastName);
     }
 
+    @Override
+    public String toString() {
+        return getFullName();
+    }
+
     public static class Builder {
         private User user = new User();
 
