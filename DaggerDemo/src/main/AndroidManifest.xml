@@ -12,8 +12,7 @@
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme"
-        android:name=".DaggerApp">
+        android:theme="@style/AppTheme" >
         <activity
             android:name="com.jbrunton.daggerdemo.UserListActivity"
             android:label="@string/app_name" >
