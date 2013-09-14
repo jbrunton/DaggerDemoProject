@@ -79,11 +79,13 @@ public class UserListFragment extends ListFragment {
     @Subscribe public void usersAvailable(UsersAvailableEvent event) {
         if (event.getUsers() != null) {
             this.adapter.addAll(event.getUsers());
+            getActivity().setProgressBarIndeterminateVisibility(false);
         }
     }
 
     public void refreshItems() {
         this.adapter.clear();
+        getActivity().setProgressBarIndeterminateVisibility(true);
         BusProvider.get().post(new RefreshUsersEvent());
     }
 
