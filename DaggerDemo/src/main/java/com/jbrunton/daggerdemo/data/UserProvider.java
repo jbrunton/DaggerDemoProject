@@ -5,10 +5,12 @@ import android.os.AsyncTask;
 import android.os.Handler;
 
 import com.jbrunton.daggerdemo.BusProvider;
+import com.jbrunton.daggerdemo.events.RefreshUsersEvent;
 import com.jbrunton.daggerdemo.events.UsersAvailableEvent;
 import com.jbrunton.daggerdemo.models.User;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Produce;
+import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -25,9 +27,17 @@ public class UserProvider {
         return new UsersAvailableEvent(this.users);
     }
 
+    @Subscribe public void refreshUsers(RefreshUsersEvent event) {
+        refresh();
+    }
+
+    public void refresh() {
+        new UsersTask().execute();
+    }
+
     public void fetch() {
         if (users == null) {
-            new UsersTask().execute();
+            refresh();
         }
     }
 

@@ -3,10 +3,14 @@ package com.jbrunton.daggerdemo;
 import android.app.Activity;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
+import com.jbrunton.daggerdemo.events.RefreshUsersEvent;
 import com.jbrunton.daggerdemo.events.UsersAvailableEvent;
 import com.jbrunton.daggerdemo.models.User;
 import com.squareup.otto.Bus;
@@ -78,9 +82,15 @@ public class UserListFragment extends ListFragment {
         }
     }
 
+    public void refreshItems() {
+        this.adapter.clear();
+        BusProvider.get().post(new RefreshUsersEvent());
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
 
         // TODO: replace with a real list adapter.
         this.adapter = new ArrayAdapter<User>(
@@ -88,6 +98,23 @@ public class UserListFragment extends ListFragment {
                 android.R.layout.simple_list_item_activated_1,
                 android.R.id.text1);
         setListAdapter(this.adapter);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.users_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_refresh:
+                refreshItems();
+                return true;
+            default:
+                return false;
+        }
     }
 
     @Override
