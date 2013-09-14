@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
+
 
 /**
  * An activity representing a list of Users. This activity
@@ -31,11 +33,21 @@ public class UserListActivity extends FragmentActivity
      * device.
      */
     private boolean mTwoPane;
+    private PullToRefreshAttacher pullToRefreshAttacher;
+
+    public PullToRefreshAttacher getPullToRefreshAttacher() {
+        return pullToRefreshAttacher;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
+        // Create a PullToRefreshAttacher instance
+        pullToRefreshAttacher = PullToRefreshAttacher.get(this);
+
         setContentView(R.layout.activity_user_list);
 
         if (findViewById(R.id.user_detail_container) != null) {

@@ -9,12 +9,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ScrollView;
 
 import com.jbrunton.daggerdemo.events.RefreshUsersEvent;
 import com.jbrunton.daggerdemo.events.UsersAvailableEvent;
 import com.jbrunton.daggerdemo.models.User;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
+
+import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 
 /**
  * A list fragment representing a list of Users. This fragment
@@ -25,7 +28,8 @@ import com.squareup.otto.Subscribe;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class UserListFragment extends ListFragment {
+public class UserListFragment extends ListFragment
+        implements PullToRefreshAttacher.OnRefreshListener {
 
     /**
      * The serialization (saved instance state) Bundle key representing the
@@ -44,6 +48,11 @@ public class UserListFragment extends ListFragment {
      */
     private int mActivatedPosition = ListView.INVALID_POSITION;
 
+    @Override
+    public void onRefreshStarted(View view) {
+        refreshItems();
+    }
+
     /**
      * A callback interface that all activities containing this fragment must
      * implement. This mechanism allows activities to be notified of item
@@ -58,6 +67,7 @@ public class UserListFragment extends ListFragment {
 
     private ArrayAdapter<User> adapter;
     private Bus bus;
+    private PullToRefreshAttacher mPullToRefreshAttacher;
 
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
@@ -80,6 +90,7 @@ public class UserListFragment extends ListFragment {
         if (event.getUsers() != null) {
             this.adapter.addAll(event.getUsers());
             getActivity().setProgressBarIndeterminateVisibility(false);
+            mPullToRefreshAttacher.setRefreshComplete();
         }
     }
 
@@ -103,23 +114,6 @@ public class UserListFragment extends ListFragment {
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.users_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_refresh:
-                refreshItems();
-                return true;
-            default:
-                return false;
-        }
-    }
-
-    @Override
     public void onPause() {
         super.onPause();
         BusProvider.get().unregister(this);
@@ -140,6 +134,15 @@ public class UserListFragment extends ListFragment {
                 && savedInstanceState.containsKey(STATE_ACTIVATED_POSITION)) {
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
+
+        ListView listView = getListView();
+        // Now get the PullToRefresh attacher from the Activity. An exercise to the reader
+        // is to create an implicit interface instead of casting to the concrete Activity
+        mPullToRefreshAttacher = ((UserListActivity) getActivity())
+                .getPullToRefreshAttacher();
+
+        // Now set the ScrollView as the refreshable view, and the refresh listener (this)
+        mPullToRefreshAttacher.addRefreshableView(listView, this);
     }
 
     @Override
