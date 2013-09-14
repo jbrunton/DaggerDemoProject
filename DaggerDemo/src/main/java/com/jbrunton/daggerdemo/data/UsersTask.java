@@ -2,7 +2,6 @@ package com.jbrunton.daggerdemo.data;
 
 import android.os.AsyncTask;
 
-import com.jbrunton.daggerdemo.BusProvider;
 import com.jbrunton.daggerdemo.models.User;
 
 import java.util.Arrays;

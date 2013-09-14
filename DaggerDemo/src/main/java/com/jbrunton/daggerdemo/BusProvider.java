@@ -5,7 +5,7 @@ import com.squareup.otto.Bus;
 /**
  * Created by John on 12/09/2013.
  */
-public class BusProvider {
+/*public class BusProvider {
     private static Bus instance;
 
     public static Bus get() {
@@ -14,4 +14,4 @@ public class BusProvider {
         }
         return instance;
     }
-}
+}*/

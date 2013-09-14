@@ -8,7 +8,7 @@ import java.util.Set;
 /**
  * Created by John on 12/09/2013.
  */
-public class ScopedBus {
+/*public class ScopedBus {
     // See Otto's sample application for how BusProvider works. Any mechanism
     // for getting a singleton instance will work.
     private final Bus bus = BusProvider.get();
@@ -46,4 +46,4 @@ public class ScopedBus {
             bus.register(obj);
         }
     }
-}
+}*/

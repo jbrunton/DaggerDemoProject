@@ -17,6 +17,8 @@ import com.jbrunton.daggerdemo.models.User;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
 
+import javax.inject.Inject;
+
 import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
 
 /**
@@ -28,7 +30,7 @@ import uk.co.senab.actionbarpulltorefresh.library.PullToRefreshAttacher;
  * Activities containing this fragment MUST implement the {@link Callbacks}
  * interface.
  */
-public class UserListFragment extends ListFragment
+public class UserListFragment extends BaseListFragment
         implements PullToRefreshAttacher.OnRefreshListener {
 
     /**
@@ -66,8 +68,8 @@ public class UserListFragment extends ListFragment
     }
 
     private ArrayAdapter<User> adapter;
-    private Bus bus;
-    private PullToRefreshAttacher mPullToRefreshAttacher;
+    protected @Inject Bus bus;
+    protected @Inject PullToRefreshAttacher mPullToRefreshAttacher;
 
     /**
      * A dummy implementation of the {@link Callbacks} interface that does
@@ -97,12 +99,13 @@ public class UserListFragment extends ListFragment
     public void refreshItems() {
         this.adapter.clear();
         getActivity().setProgressBarIndeterminateVisibility(true);
-        BusProvider.get().post(new RefreshUsersEvent());
+        bus.post(new RefreshUsersEvent());
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setHasOptionsMenu(true);
 
         // TODO: replace with a real list adapter.
@@ -116,13 +119,13 @@ public class UserListFragment extends ListFragment
     @Override
     public void onPause() {
         super.onPause();
-        BusProvider.get().unregister(this);
+        bus.unregister(this);
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        BusProvider.get().register(this);
+        bus.register(this);
     }
 
     @Override
@@ -135,14 +138,16 @@ public class UserListFragment extends ListFragment
             setActivatedPosition(savedInstanceState.getInt(STATE_ACTIVATED_POSITION));
         }
 
-        ListView listView = getListView();
-        // Now get the PullToRefresh attacher from the Activity. An exercise to the reader
-        // is to create an implicit interface instead of casting to the concrete Activity
-        mPullToRefreshAttacher = ((UserListActivity) getActivity())
-                .getPullToRefreshAttacher();
+        // Now set the ScrollView as the refreshable view, and the refresh listener (this)
+        // mPullToRefreshAttacher.addRefreshableView(getListView(), this);
+    }
+
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
 
         // Now set the ScrollView as the refreshable view, and the refresh listener (this)
-        mPullToRefreshAttacher.addRefreshableView(listView, this);
+        mPullToRefreshAttacher.addRefreshableView(getListView(), this);
     }
 
     @Override

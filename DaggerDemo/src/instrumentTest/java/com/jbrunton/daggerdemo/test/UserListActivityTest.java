@@ -35,7 +35,7 @@ public class UserListActivityTest extends ActivityInstrumentationTestCase2 {
 
     public void testDisplayUsers() {
         // Given a list of users
-        
+
 
         // When I view the UserListActivity
         getInstrumentation().waitForIdleSync();

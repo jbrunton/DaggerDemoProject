@@ -7,6 +7,6 @@ import java.util.Collection;
 /**
  * Created by John on 14/09/2013.
  */
-public interface UserManager {
+public interface UserDataSource {
     Collection<User> loadUsers();
 }
