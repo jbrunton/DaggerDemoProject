@@ -1,8 +1,6 @@
-package com.jbrunton.daggerdemo.data;
+package com.jbrunton.daggerdemo.data.users;
 
-import android.app.Activity;
 import android.os.AsyncTask;
-import android.os.Handler;
 
 import com.jbrunton.daggerdemo.BusProvider;
 import com.jbrunton.daggerdemo.events.RefreshUsersEvent;
@@ -14,7 +12,6 @@ import com.squareup.otto.Subscribe;
 
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Created by John on 12/09/2013.
@@ -22,6 +19,7 @@ import java.util.List;
 public class UserProvider {
     private Collection<User> users;
     private Bus bus;
+    private UserManager userManager;
 
     @Produce public UsersAvailableEvent produceUsers() {
         return new UsersAvailableEvent(this.users);
@@ -46,15 +44,16 @@ public class UserProvider {
         BusProvider.get().post(produceUsers());
     }
 
-    private UserProvider(Bus bus) {
+    private UserProvider(Bus bus, UserManager userManager) {
         this.bus = bus;
+        this.userManager = userManager;
         bus.register(this);
     }
 
     private static UserProvider instance;
-    public static UserProvider get() {
+    public static UserProvider get(UserManager userManager) {
         if (instance == null) {
-            instance = new UserProvider(BusProvider.get());
+            instance = new UserProvider(BusProvider.get(), userManager);
         }
         return instance;
     }
@@ -67,12 +66,7 @@ public class UserProvider {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-            return Arrays.asList(new User[]{
-                    new User.Builder()
-                            .setFirstName("John")
-                            .setLastName("Brunton")
-                            .getInstance()
-            });
+            return userManager.loadUsers();
         }
 
         @Override
