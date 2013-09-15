@@ -1,4 +1,4 @@
-package com.jbrunton.daggerdemo;
+package com.jbrunton.daggerdemo.common;
 
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;

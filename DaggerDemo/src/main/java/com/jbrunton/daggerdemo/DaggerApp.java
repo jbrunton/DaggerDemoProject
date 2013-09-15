@@ -2,11 +2,10 @@ package com.jbrunton.daggerdemo;
 
 import android.app.Application;
 
+import com.jbrunton.daggerdemo.common.AndroidModule;
 import com.jbrunton.daggerdemo.data.DataProviderModule;
 import com.jbrunton.daggerdemo.data.MemoryDataSourceModule;
-import com.jbrunton.daggerdemo.data.users.MemoryUserDataSource;
 import com.jbrunton.daggerdemo.data.users.UserProvider;
-import com.jbrunton.daggerdemo.models.User;
 
 import java.util.Arrays;
 import java.util.List;

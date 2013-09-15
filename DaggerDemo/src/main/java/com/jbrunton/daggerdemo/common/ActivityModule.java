@@ -1,10 +1,15 @@
-package com.jbrunton.daggerdemo;
+package com.jbrunton.daggerdemo.common;
 
 /**
  * Created by John on 14/09/2013.
  */
 
 import android.content.Context;
+
+import com.jbrunton.daggerdemo.UserDetailActivity;
+import com.jbrunton.daggerdemo.UserDetailFragment;
+import com.jbrunton.daggerdemo.UserListActivity;
+import com.jbrunton.daggerdemo.UserListFragment;
 
 import javax.inject.Singleton;
 
@@ -37,7 +42,8 @@ public class ActivityModule {
      * Allow the activity context to be injected but require that it be annotated with
      * {@link ForActivity @ForActivity} to explicitly differentiate it from application context.
      */
-    @Provides @Singleton @ForActivity Context provideActivityContext() {
+    @Provides @Singleton @ForActivity
+    Context provideActivityContext() {
         return activity;
     }
 }

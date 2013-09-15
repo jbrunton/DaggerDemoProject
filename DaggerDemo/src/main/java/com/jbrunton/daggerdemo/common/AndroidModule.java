@@ -1,7 +1,8 @@
-package com.jbrunton.daggerdemo;
+package com.jbrunton.daggerdemo.common;
 
 import android.content.Context;
 
+import com.jbrunton.daggerdemo.DaggerApp;
 import com.squareup.otto.Bus;
 
 import javax.inject.Singleton;
@@ -24,7 +25,8 @@ public class AndroidModule {
      * Allow the application context to be injected but require that it be annotated with
      * {@link ForApplication @ForApplication} to explicitly differentiate it from an activity context.
      */
-    @Provides @Singleton @ForApplication Context provideApplicationContext() {
+    @Provides @Singleton @ForApplication
+    Context provideApplicationContext() {
         return application;
     }
 

@@ -1,7 +1,10 @@
-package com.jbrunton.daggerdemo;
+package com.jbrunton.daggerdemo.common;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
+
+import com.jbrunton.daggerdemo.DaggerApp;
+import com.jbrunton.daggerdemo.common.ActivityModule;
 
 import java.util.Arrays;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.jbrunton.daggerdemo;
+package com.jbrunton.daggerdemo.common;
 
 import java.lang.annotation.Retention;
 

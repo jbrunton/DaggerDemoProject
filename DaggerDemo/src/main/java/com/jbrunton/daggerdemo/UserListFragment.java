@@ -2,15 +2,11 @@ package com.jbrunton.daggerdemo;
 
 import android.app.Activity;
 import android.os.Bundle;
-import android.support.v4.app.ListFragment;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.ScrollView;
 
+import com.jbrunton.daggerdemo.common.BaseListFragment;
 import com.jbrunton.daggerdemo.events.RefreshUsersEvent;
 import com.jbrunton.daggerdemo.events.UsersAvailableEvent;
 import com.jbrunton.daggerdemo.models.User;

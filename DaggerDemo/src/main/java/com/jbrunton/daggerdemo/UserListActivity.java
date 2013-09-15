@@ -1,17 +1,13 @@
 package com.jbrunton.daggerdemo;
 
-import android.app.ListFragment;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.FragmentActivity;
 import android.view.Window;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import com.jbrunton.daggerdemo.common.BaseActivity;
+
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.inject.Inject;
 
 
 /**
